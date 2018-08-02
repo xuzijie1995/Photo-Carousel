@@ -1,2 +1,2 @@
-# Photo-Gallary
-This a photo-gallary that is written by JavaScript
+# Photo-Carousel
+This a photo-carousel that is written by JavaScript
