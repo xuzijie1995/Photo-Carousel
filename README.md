@@ -30,22 +30,22 @@ var imagess = [
 ]
 var data = [
 	{
-		url:'#'
+		url:'#' // no address
 	},
 	{
-		url:'www.baidu.com'
+		url:'https://github.com/xuzijie1995/Photo-Carousel' // if no 'https://' or 'http://', 'http://' will be added Automatically & u can change this in photo-carousel.js line 227
 	},
 	{
-		url:'javascript:void(0)'
+		url:'javascript:void(0)' //no address too
 	}
 ]
 var el = new PhotoCarousel({
-	images : imagess, // * necessary
-	data : data, // * necessary
-	id : 'photo-carousel', // * necessary
-	max : 10, // default 10 unnecessary
-	sensibility : 1, // default 1 unnecessary
-	interval: 5 // default 5 unnecessary
+	images : imagess, 		// * necessary
+	data : data, 			// * necessary
+	id : 'photo-carousel', 		// * necessary
+	max : 10, 			//(0<max<100), default 10, unnecessary
+	sensibility : 1,		//(sensibility when dragging), default 1, unnecessary, but I suggest sensibility=max/10
+	interval: 5 			//(seconds), default 5, unnecessary
 });
 el.init();
 ```
