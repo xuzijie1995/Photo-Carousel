@@ -8,8 +8,8 @@ function PhotoCarousel(obj){
 		index:0,
 		flag:false,
 		disabled:false,
-		max:obj.max|10,
-		sensibility:obj.sensibility|1,
+		max:obj.max||10,
+		sensibility:obj.sensibility||1,
 		data:obj.data,
 		images:obj.images,
 		clock:'',
@@ -27,9 +27,9 @@ function PhotoCarousel(obj){
 			el = document.createElement("li");
 			img = document.createElement("img");
 			if(i==0){
-				img.setAttribute('src',images[images.length-1]);
+				img.setAttribute('src',_this.pg.images[_this.pg.images.length-1]);
 			}else{
-				img.setAttribute('src',images[i-1]);
+				img.setAttribute('src',_this.pg.images[i-1]);
 			}
 			el.appendChild(img);
 			photoCarouselImgList.appendChild(el);
@@ -118,6 +118,7 @@ PhotoCarousel.prototype.pointClick=function(_this){
 			els[2].parentNode.removeChild(els[2]);
 			_this._el.querySelector(".photo-carousel-imgList").insertAdjacentHTML("afterbegin","<li><img src='"+_this.setPhotoCarousel(true)+"'></li>");
 		}
+		console.log(_this.pg.index.toString());
 		_this.goPhotoCarousel();
 	}
 }
@@ -173,47 +174,53 @@ PhotoCarousel.prototype.end=function(_this){
 	_this.pg.flag=false;
 	if(_this.pg.disabled)return false;
 	var els = _this._el.querySelectorAll(".photo-carousel-imgList li");
-		if(_this.pg.offset*1>=_this.pg.max*1){//left -> right
-			els[1].style.left = "100%";
-			els[0].style.left = "0";
-			els[2].parentNode.removeChild(els[2]);
-			_this.pg.index = _this.getPhotoCarouselIndex(true,_this.pg.index,_this.pg.images.length);
-			_this._el.querySelector(".photo-carousel-imgList").insertAdjacentHTML("afterbegin","<li><img src='"+_this.setPhotoCarousel(true)+"'></li>");
-			_this._el.querySelector(".photo-carousel-pointList li.active").classList.remove("active");
-			_this._el.querySelectorAll(".photo-carousel-pointList li")[_this.pg.index].classList.add("active");
-			_this.pg.disabled=true;
-			setTimeout(function(){
-				_this.pg.disabled=false;
-			},900);
-		}else if(_this.pg.offset*1>_this.pg.max*-1){
-			els[2].style.left = "100%";
-			els[1].style.left = "0%";
-			els[0].style.left = "-100%";
-	    }else{//right -> left
-	    	els[1].style.left = "-100%";
-	    	els[2].style.left = "0%";
-	    	els[0].parentNode.removeChild(els[0]);
-	    	_this.pg.index = _this.getPhotoCarouselIndex(false,_this.pg.index,_this.pg.images.length);
-	    	_this._el.querySelector(".photo-carousel-imgList").insertAdjacentHTML("beforeend","<li><img src='"+_this.setPhotoCarousel(false)+"'></li>");
-	    	_this._el.querySelector(".photo-carousel-pointList li.active").classList.remove("active");
-	    	_this._el.querySelectorAll(".photo-carousel-pointList li")[_this.pg.index].classList.add("active");
-	    	_this.pg.disabled=true;
-	    	setTimeout(function(){
-	    		_this.pg.disabled=false;
-	    	},900);
-	    }
-	    _this.goPhotoCarousel();
+	if(_this.pg.offset*1>=_this.pg.max*1){//left -> right
+		els[1].style.left = "100%";
+		els[0].style.left = "0";
+		els[2].parentNode.removeChild(els[2]);
+		_this.pg.index = _this.getPhotoCarouselIndex(true,_this.pg.index,_this.pg.images.length);
+		_this._el.querySelector(".photo-carousel-imgList").insertAdjacentHTML("afterbegin","<li><img src='"+_this.setPhotoCarousel(true)+"'></li>");
+		_this._el.querySelector(".photo-carousel-pointList li.active").classList.remove("active");
+		_this._el.querySelectorAll(".photo-carousel-pointList li")[_this.pg.index].classList.add("active");
+		_this.pg.disabled=true;
+		setTimeout(function(){
+			_this.pg.disabled=false;
+		},900);
+	}else if(_this.pg.offset*1>_this.pg.max*-1){
+		els[2].style.left = "100%";
+		els[1].style.left = "0%";
+		els[0].style.left = "-100%";
+    }else{//right -> left
+    	els[1].style.left = "-100%";
+    	els[2].style.left = "0%";
+    	els[0].parentNode.removeChild(els[0]);
+    	_this.pg.index = _this.getPhotoCarouselIndex(false,_this.pg.index,_this.pg.images.length);
+    	_this._el.querySelector(".photo-carousel-imgList").insertAdjacentHTML("beforeend","<li><img src='"+_this.setPhotoCarousel(false)+"'></li>");
+    	_this._el.querySelector(".photo-carousel-pointList li.active").classList.remove("active");
+    	_this._el.querySelectorAll(".photo-carousel-pointList li")[_this.pg.index].classList.add("active");
+    	_this.pg.disabled=true;
+    	setTimeout(function(){
+    		_this.pg.disabled=false;
+    	},900);
+    }
+    _this.goPhotoCarousel();
 }
 PhotoCarousel.prototype.checkInput=function(obj,_this){
 	try
 	{
-		if(obj.images==null||obj.images.length==0){throw "PhotoCarousel {images} can not be null";}
+		if(obj.images==null||obj.images.length==0){
+			throw "PhotoCarousel {images} can not be null";
+			return false;
+		}
 		_this._el=document.getElementById(obj.id);
-		if(_this._el){throw "element id {"+obj.id+"} not found";}
+		if(_this._el==null){
+			throw "PhotoCarousel target element id {"+obj.id+"} not found";
+			return false;
+		}
 	}
-	catch(err)
+	catch(e)
 	{
-		
+		console.log(e);
 	}
 }
 PhotoCarousel.prototype.checkHttp=function(e){
@@ -254,21 +261,21 @@ PhotoCarousel.prototype.removeEventHandler=function(target,type,fn){
 }
 PhotoCarousel.prototype.getPhotoCarouselIndex=function(b,c,l){
 	if(b){
-		if(c-1<0){
-			return l-1;
+		if(c*1-1<0){
+			return l*1-1;
 		}else{
-			return c-1;
+			return c*1-1;
 		}
 	}else{
-		if(c+1>l-1){
+		if(c*1+1>l*1-1){
 			return 0;
 		}else{
-			return c+1;
+			return c*1+1;
 		}
 	}
 }
 PhotoCarousel.prototype.setPhotoCarousel=function(b){
-	return images[this.getPhotoCarouselIndex(b,this.pg.index,this.pg.images.length)];
+	return this.pg.images[this.getPhotoCarouselIndex(b,this.pg.index,this.pg.images.length)];
 }
 PhotoCarousel.prototype.stopPhotoCarousel=function(){
 	clearInterval(this.pg.clock);
