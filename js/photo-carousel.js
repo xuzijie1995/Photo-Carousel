@@ -13,6 +13,7 @@ function PhotoCarousel(obj){
 		data:obj.data,
 		images:obj.images,
 		clock:'',
+		interval:obj.interval||5
 	}
 	_this.init=function(){
 		var photoCarouselContent = document.createDocumentFragment();
@@ -292,5 +293,5 @@ PhotoCarousel.prototype.goPhotoCarousel=function(){
 		_this._el.querySelector(".photo-carousel-imgList").insertAdjacentHTML("beforeend","<li><img src='"+_this.setPhotoCarousel(false)+"'></li>");
 		_this._el.querySelector(".photo-carousel-pointList li.active").classList.remove("active");
 		_this._el.querySelectorAll(".photo-carousel-pointList li")[_this.pg.index].classList.add("active");
-	},5000);
+	},_this.pg.interval*1000);
 }
