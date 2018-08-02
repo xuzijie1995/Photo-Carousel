@@ -53,3 +53,7 @@ var el = new PhotoCarousel({
 });
 el.init();
 ```
+##Attention
++ 1.The PhotoCarousel will not Scroll automatically if there is only one picture.
++ 2.No testments for mobile yet, but I have done some adaptions to mobile, I need a volunteer. :P 
++ 3.I am practising my English.
