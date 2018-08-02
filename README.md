@@ -5,11 +5,11 @@ This a photo-carousel that is written by JavaScript
 ![DemoGIF](https://raw.githubusercontent.com/xuzijie1995/Photo-Carousel/master/images/demo.gif)
 
 #Functions
-+ 1.Automatic rolling
++ 1.Scroll  automatically
 + 2.Supporting left and right dragging
-+ 3.Click the navigation point switch
++ 3.Click the navigation point to switch
 + 4.Support click pictures to access the external address
-+ 5.Encapsulation and easy to use
++ 5.Encapsulated and easy to use
 + 6.Native JavaScript writing
 
 #Create&Init
@@ -35,7 +35,8 @@ var data = [
 	},
 	{
 		url:'https://github.com/xuzijie1995/Photo-Carousel' 
-		/*no 'https://' or 'http://', 'http://' will be added Automatically & u can change this in photo-carousel.js line 227*/
+		/*no 'https://' or 'http://', 'http://' will be added automatically 
+		& u can change this in photo-carousel.js line 227*/
 	},
 	{
 		url:'javascript:void(0)' 
@@ -46,9 +47,9 @@ var el = new PhotoCarousel({
 	images : imagess, 		// * necessary
 	data : data, 			// * necessary
 	id : 'photo-carousel', 		// * necessary
-	max : 10, 			//(0<max<100), default 10, unnecessary
-	sensibility : 1,		//(sensibility when dragging), default 1, unnecessary, but I suggest sensibility=max/10
-	interval: 5 			//(seconds), default 5, unnecessary
+	max : 10, 			//default 10, unnecessary, the max (%) for next picture u can see when dragging, 0<max<100
+	sensibility : 1,		//unnecessary, default 1, sensibility when dragging, but I suggest sensibility=max/10
+	interval: 5 			//unnecessary, default 5(s), seconds for scroll automatically
 });
 el.init();
 ```
