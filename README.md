@@ -1,10 +1,10 @@
 # Photo-Carousel
 This a photo-carousel that is written by JavaScript
 
-#Demo GIF
+# Demo GIF
 ![DemoGIF](https://raw.githubusercontent.com/xuzijie1995/Photo-Carousel/master/images/demo.gif)
 
-#Functions
+# Functions
 + 1.Scroll  automatically
 + 2.Supporting left and right dragging
 + 3.Click the navigation point to switch
@@ -12,7 +12,7 @@ This a photo-carousel that is written by JavaScript
 + 5.Encapsulated and easy to use
 + 6.Native JavaScript writing
 
-#Create&Init
+# Create&Init
 ```js
 <script src="js/photo-carousel.js"></script>
 ```
@@ -53,7 +53,7 @@ var el = new PhotoCarousel({
 });
 el.init();
 ```
-##Attention
+## Attention
 + 1.The PhotoCarousel will not Scroll automatically if there is only one picture.
 + 2.No testments for mobile yet, but I have done some adaptions to mobile, I need a volunteer. :P 
 + 3.I am practising my English.
