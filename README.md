@@ -30,13 +30,16 @@ var imagess = [
 ]
 var data = [
 	{
-		url:'#' // no address
+		url:'#' 
+		/* no address */
 	},
 	{
-		url:'https://github.com/xuzijie1995/Photo-Carousel' // if no 'https://' or 'http://', 'http://' will be added Automatically & u can change this in photo-carousel.js line 227
+		url:'https://github.com/xuzijie1995/Photo-Carousel' 
+		/*no 'https://' or 'http://', 'http://' will be added Automatically & u can change this in photo-carousel.js line 227*/
 	},
 	{
-		url:'javascript:void(0)' //no address too
+		url:'javascript:void(0)' 
+		/* no address */
 	}
 ]
 var el = new PhotoCarousel({
