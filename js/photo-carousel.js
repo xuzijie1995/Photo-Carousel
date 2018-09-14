@@ -3,11 +3,9 @@ function PhotoCarousel(obj){
 	_this.checkInput(obj,_this);
 	_this.pg = {
 		startX:0,
-        endX:0,
-        startY:0,
-        endY:0,
-		x:0,
-		y:0,
+		endX:0,
+		startY:0,
+		endY:0,
 		nx:0,
 		offsetX:0,
 		offsetY:0,
@@ -15,7 +13,7 @@ function PhotoCarousel(obj){
 		flag:false,
 		disabled:false,
 		maxX:obj.maxX||10,
-		maxY:obj.maxX||100,
+		maxY:obj.maxY||100,
 		moveFlag:obj.moveFlag||true,
 		inMobileFlag:obj.inMobileFlag||false,
 		sensibility:obj.sensibility||1,
