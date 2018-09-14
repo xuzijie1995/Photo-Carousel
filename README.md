@@ -50,6 +50,10 @@ var el = new PhotoCarousel({
 	max : 10, 			//default 10, unnecessary, the max (%) for next picture u can see when dragging, 0<max<100
 	sensibility : 1,		//unnecessary, default 1, sensibility when dragging, but I suggest sensibility=max/10
 	interval: 5 			//unnecessary, default 5(s), seconds for scroll automatically
+	maxX:10,			//unnecessary, the maximum % value of horizontal line when mouse(touch) moving
+	maxY:100,			//unnecessary, the maximum px value of vertical line when moving, mostly used in mobile
+	moveFlag:true,			//unnecessary, show moving trasition effects when mouse(touch) moving
+	inMobileFlag:false,		//unnecessary, set up in mobile ,avoid the srcoll ,solve some incident conflicts
 });
 el.init();
 ```
