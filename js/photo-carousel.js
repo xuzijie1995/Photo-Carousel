@@ -2,16 +2,26 @@ function PhotoCarousel(obj){
 	var _this = this;
 	_this.checkInput(obj,_this);
 	_this.pg = {
+		startX:0,
+        endX:0,
+        startY:0,
+        endY:0,
 		x:0,
+		y:0,
 		nx:0,
-		offset:0,
+		offsetX:0,
+		offsetY:0,
 		index:0,
 		flag:false,
 		disabled:false,
-		max:obj.max||10,
+		maxX:obj.maxX||10,
+		maxY:obj.maxX||100,
+		moveFlag:obj.moveFlag||true,
+		inMobileFlag:obj.inMobileFlag||false,
 		sensibility:obj.sensibility||1,
 		data:obj.data,
 		images:obj.images,
+		clientWidth:0,
 		clock:'',
 		interval:obj.interval||5
 	}
@@ -126,56 +136,61 @@ PhotoCarousel.prototype.pointClick=function(_this){
 PhotoCarousel.prototype.down=function(_this){
 	if(!_this.pg.flag){
 		_this.pg.flag=true;
-		var touch;
-		if(event.touches){
-			touch = event.touches[0]
-		}else{
-			touch = event;
-		}
-		_this.pg.x = _this.pg.nx = touch.clientX;
-		_this.pg.offset=0;
+		var touch = PhotoCarousel.prototype.getTouchEnvent();
+		_this.pg.startX = _this.pg.nx = touch.clientX;
+		_this.pg.startY = touch.clientY;
+		_this.pg.clientWidth = _this._el.querySelector(".photo-carousel-imgList").clientWidth;
 	}
 }
 PhotoCarousel.prototype.move=function(_this){
-	event.preventDefault();
+	if(!_this.pg.inMobileFlag){event.preventDefault();}
 	if(_this.pg.disabled)return false;
 	if(_this.pg.flag){
 		_this.stopPhotoCarousel();
-		var els = _this._el.querySelectorAll(".photo-carousel-imgList li");
-		var touch;
-		if(event.touches){
-			touch = event.touches[0]
-		}else{
-			touch = event;
-		}
-		if(touch.clientX>_this.pg.x){
-			++_this.pg.offset;
+		var touch = PhotoCarousel.prototype.getTouchEnvent();
+		_this.pg.endX = touch.clientX;
+		_this.pg.endY = touch.clientY;
+		/*if(touch.clientX>_this.pg.x){
+			++_this.pg.offsetX;
 		}else if(touch.clientX<_this.pg.x){
-			--_this.pg.offset;
+			--_this.pg.offsetX;
+		}*/
+		//_this.pg.x=touch.clientX;
+		if(_this.pg.moveFlag){
+			PhotoCarousel.prototype.moveTrasition(_this);
 		}
-		_this.pg.x=touch.clientX;
-		if(_this.pg.offset*1>=_this.pg.max*1){
-			_this.pg.offset = _this.pg.max;
-			els[0].style.left = -100 + _this.pg.max*1 + "%";
-			els[1].style.left = _this.pg.max*1 + "%";
-			els[2].style.left = "100%";
-		}else if(_this.pg.offset*1>_this.pg.max*-1){
-			els[0].style.left = -100+_this.pg.offset*1+"%";
-			els[2].style.left = 100+_this.pg.offset*1+"%";
-			els[1].style.left = _this.pg.offset+"%";
-		}else{
-			_this.pg.offset = -1*_this.pg.max;
-			els[2].style.left = 100+_this.pg.max*-1+"%";
-			els[1].style.left = _this.pg.max*-1+"%";
-			els[0].style.left = "-100%";
-		}
+	}
+}
+PhotoCarousel.prototype.moveTrasition =function(_this){
+	var els = _this._el.querySelectorAll(".photo-carousel-imgList li");
+	_this.pg.offsetX = ((_this.pg.endX - _this.pg.startX)*100/_this.pg.clientWidth);
+	console.log(_this.pg.offsetX);
+	if(_this.pg.offsetX*1>=_this.pg.maxX*1){
+		_this.pg.offsetX = _this.pg.maxX;
+		els[0].style.left = -100 + _this.pg.maxX*1 + "%";
+		els[1].style.left = _this.pg.maxX*1 + "%";
+		els[2].style.left = "100%";
+	}else if(_this.pg.offsetX*1>_this.pg.maxX*-1){
+		els[0].style.left = -100+_this.pg.offsetX*1+ "%";
+		els[2].style.left = 100+_this.pg.offsetX*1+ "%";
+		els[1].style.left =_this.pg.offsetX*1+ "%";
+	}else{
+		_this.pg.offsetX = -1*_this.pg.maxX;
+		els[2].style.left = 100+_this.pg.maxX*-1+"%";
+		els[1].style.left = _this.pg.maxX*-1+"%";
+		els[0].style.left = "-100%";
 	}
 }
 PhotoCarousel.prototype.end=function(_this){
 	_this.pg.flag=false;
 	if(_this.pg.disabled)return false;
+	_this.pg.offsetY=Math.abs(_this.pg.startY-_this.pg.endY);
+	if(_this.pg.offsetY>_this.pg.maxY*1){
+		return false;
+	}
+	_this.pg.offsetX = ((_this.pg.endX - _this.pg.startX)*100/_this.pg.clientWidth);
 	var els = _this._el.querySelectorAll(".photo-carousel-imgList li");
-	if(_this.pg.offset*1>=_this.pg.max*1){//left -> right
+	if(_this.pg.offsetX*1>=_this.pg.maxX*1){//left -> right
 		els[1].style.left = "100%";
 		els[0].style.left = "0";
 		els[2].parentNode.removeChild(els[2]);
@@ -187,7 +202,7 @@ PhotoCarousel.prototype.end=function(_this){
 		setTimeout(function(){
 			_this.pg.disabled=false;
 		},900);
-	}else if(_this.pg.offset*1>_this.pg.max*-1){
+	}else if(_this.pg.offsetX*1>_this.pg.maxX*-1){
 		els[2].style.left = "100%";
 		els[1].style.left = "0%";
 		els[0].style.left = "-100%";
@@ -294,4 +309,11 @@ PhotoCarousel.prototype.goPhotoCarousel=function(){
 		_this._el.querySelector(".photo-carousel-pointList li.active").classList.remove("active");
 		_this._el.querySelectorAll(".photo-carousel-pointList li")[_this.pg.index].classList.add("active");
 	},_this.pg.interval*1000);
+}
+PhotoCarousel.prototype.getTouchEnvent=function(){
+	if(event.touches){
+		return event.touches[0]
+	}else{
+		return event;
+	}
 }
